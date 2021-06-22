@@ -1,0 +1,19 @@
+{
+  "name": "Closure Tools DevTools",
+  "description": "DevTools for Google Closure Tools",
+  "version": "1.0",
+  "manifest_version": 3,
+  "devtools_page": "devtools.html",
+  "permissions": [],
+  "host_permissions": ["*://*/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ]
+}
