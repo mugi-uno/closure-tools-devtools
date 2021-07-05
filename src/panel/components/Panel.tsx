@@ -30,7 +30,9 @@ export const Panel: React.FC = () => {
         <button
           type="button"
           onClick={handleHighlightButton}
-          className={classNames("rounded-full border cursor-pointer m-2 p-1", { "border-red-400": highlightEnabled })}
+          className={classNames("rounded-full border-2 cursor-pointer m-2 p-1 transition-all", {
+            "border-red-400 bg-yellow-50": highlightEnabled,
+          })}
         >
           <img src={searchSVG} className="object-contain" />
         </button>
