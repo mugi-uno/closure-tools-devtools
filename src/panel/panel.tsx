@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { connect } from "../port";
-import { Panel } from "./components/Panel";
+import { App } from "./components/App";
 import { listener } from "./listener";
 import { store } from "./modules/store";
 
@@ -11,7 +11,7 @@ listener(store.dispatch);
 
 ReactDOM.render(
   <Provider store={store}>
-    <Panel />
+    <App />
   </Provider>,
   document.getElementById("app")
 );
