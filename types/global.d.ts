@@ -1,3 +1,5 @@
 declare const goog = any;
 declare const closuretoolsdevtools = any;
-declare module "*.svg";
+declare interface Window {
+  __CLOSURE_TOOLS_DEVTOOLS__: { inject: () => void };
+}

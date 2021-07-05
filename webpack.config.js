@@ -9,6 +9,7 @@ module.exports = {
     content: path.resolve(__dirname, "./src/content/content.ts"),
     background: path.resolve(__dirname, "./src/background/background.ts"),
     inject: path.resolve(__dirname, "./src/inject/inject.ts"),
+    injectHook: path.resolve(__dirname, "./src/inject/injectHook.ts"),
   },
   output: {
     path: path.resolve(__dirname, "./dist"),

@@ -1,5 +1,4 @@
-import { MODULE_NAME_ATTRIBUTE_NAME } from "../inject/constants";
-import { findByModuleId } from "./util";
+import { findByModuleId, getModuleName } from "./util";
 
 let highlightElements: Element[] = [];
 
@@ -39,7 +38,7 @@ export const highlight = (elementOrId: Element | string) => {
     console.log(name);
   });
 
-  const name = element.getAttribute(MODULE_NAME_ATTRIBUTE_NAME);
+  const name = getModuleName(element);
   const nameElement = document.createElement("div");
   nameElement.innerText = name!;
 

@@ -1,8 +1,8 @@
 import { findAllModules, findClosestModule, getModuleAttributes } from "./util";
-import { ClosureComponent } from "../types";
 import { postMessage } from "../port";
+import { ClosureComponentType } from "../types";
 
-export const scan = (rootElement: Element = document.body): ClosureComponent[] => {
+export const scan = (rootElement: Element = document.body): ClosureComponentType[] => {
   return findAllModules(rootElement)
     .filter((el) => {
       if (!el.parentElement) return true;

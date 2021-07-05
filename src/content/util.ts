@@ -1,4 +1,4 @@
-import { ID_ATRRIBUTE_NAME, MODULE_NAME_ATTRIBUTE_NAME } from "../inject/constants";
+import { ID_ATRRIBUTE_NAME, MODULE_NAME_ATTRIBUTE_NAME } from "./../types";
 
 const MODULE_SELECTOR = `[${MODULE_NAME_ATTRIBUTE_NAME}]`;
 
