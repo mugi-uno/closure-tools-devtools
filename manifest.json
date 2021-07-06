@@ -19,7 +19,7 @@
   "web_accessible_resources": [
     {
       "matches": ["<all_urls>"],
-      "resources": ["injectHook.js"]
+      "resources": ["setupDevTools.js"]
     }
   ]
 }

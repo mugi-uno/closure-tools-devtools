@@ -34,6 +34,6 @@ connect("content").onMessage.addListener((msg: PanelMessages) => {
 });
 
 const script = document.constructor.prototype.createElement.call(document, "script");
-script.src = chrome.runtime.getURL("injectHook.js");
+script.src = chrome.runtime.getURL("setupDevTools.js");
 document.documentElement.appendChild(script);
 script.parentNode.removeChild(script);

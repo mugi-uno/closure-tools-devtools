@@ -8,8 +8,7 @@ module.exports = {
     devtools: path.resolve(__dirname, "./src/devtools/devtools.ts"),
     content: path.resolve(__dirname, "./src/content/content.ts"),
     background: path.resolve(__dirname, "./src/background/background.ts"),
-    inject: path.resolve(__dirname, "./src/inject/inject.ts"),
-    injectHook: path.resolve(__dirname, "./src/inject/injectHook.ts"),
+    setupDevTools: path.resolve(__dirname, "./src/activator/setupDevTools.ts"),
   },
   output: {
     path: path.resolve(__dirname, "./dist"),
@@ -46,7 +45,7 @@ module.exports = {
       chunks: ["panel"],
     }),
     new CopyPlugin({
-      patterns: [{ from: "manifest.json" }],
+      patterns: [{ from: "manifest.json" }, { from: "src/activator/setup.js" }],
     }),
   ],
   devtool: "source-map",

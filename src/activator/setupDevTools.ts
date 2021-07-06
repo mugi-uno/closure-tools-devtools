@@ -14,7 +14,7 @@ const generateId = (() => {
   return () => `id${id++}`;
 })();
 
-const injectHook = () => {
+const setup = () => {
   const org: Function = goog.ui.Component.prototype.enterDocument;
 
   goog.ui.Component.prototype.enterDocument = function () {
@@ -30,5 +30,5 @@ const injectHook = () => {
 };
 
 window.__CLOSURE_TOOLS_DEVTOOLS__ = {
-  inject: injectHook,
+  setup: setup,
 };

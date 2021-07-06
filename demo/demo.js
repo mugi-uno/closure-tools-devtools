@@ -1,7 +1,7 @@
 goog.require("demo.components.App");
 
-goog.require("closuretoolsdevtools.inject");
-closuretoolsdevtools.inject();
+goog.require("closuretoolsdevtools.setup");
+closuretoolsdevtools.setup();
 
 document.addEventListener("DOMContentLoaded", () => {
   const app = new demo.components.App();
