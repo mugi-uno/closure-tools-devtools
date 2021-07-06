@@ -1,1 +1,1 @@
-chrome.devtools.panels.create("Closure Tools DevTools", "", "panel.html", () => {});
+chrome.devtools.panels.create("Closure", "", "panel.html", () => {});

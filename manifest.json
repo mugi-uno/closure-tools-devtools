@@ -3,6 +3,11 @@
   "description": "DevTools for Google Closure Tools",
   "version": "1.0",
   "manifest_version": 3,
+  "icons": {
+    "16": "resources/icon-16x16.png",
+    "48": "resources/icon-48x48.png",
+    "128": "resources/icon-128x128.png"
+  },
   "devtools_page": "devtools.html",
   "permissions": [],
   "host_permissions": ["*://*/*"],

@@ -71,5 +71,8 @@ export const { actions, reducer } = createSlice({
     eventDispached(state, action: PayloadAction<EventDispatchEventObject>) {
       state.events.push(action.payload);
     },
+    clearDispatchedEvents(state) {
+      state.events = [];
+    },
   },
 });

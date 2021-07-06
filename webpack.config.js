@@ -45,7 +45,7 @@ module.exports = {
       chunks: ["panel"],
     }),
     new CopyPlugin({
-      patterns: [{ from: "manifest.json" }, { from: "src/activator/setup.js" }],
+      patterns: [{ from: "manifest.json" }, { from: "src/activator/setup.js" }, { from: "resources/icon-*.png" }],
     }),
   ],
   devtool: "source-map",

@@ -12,3 +12,9 @@ demo.components.Cell.prototype.createDom = function () {
   cell.innerText = "cell";
   this.setElementInternal(cell);
 };
+
+demo.components.Cell.prototype.enterDocument = function () {
+  this.getHandler().listen(this.getElement(), goog.events.EventType.CLICK, () => {
+    this.dispatchEvent({ type: "dummyEvent" });
+  });
+};
