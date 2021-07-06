@@ -1,4 +1,10 @@
-import { ID_ATRRIBUTE_NAME, MODULE_NAME_ATTRIBUTE_NAME } from "../types";
+import {
+  EventDispatchBindingCallback,
+  EventDispatchedEventName,
+  EventDispatchEventObject,
+  ID_ATRRIBUTE_NAME,
+  MODULE_NAME_ATTRIBUTE_NAME,
+} from "../types";
 
 const getCurrentModuleName = () => {
   const stack = new Error().stack;
@@ -6,7 +12,8 @@ const getCurrentModuleName = () => {
   return line
     .replace(/^.* at /, "")
     .replace(/ .*$/, "")
-    .replace(/\.goog\.ui\.Component.*/, "");
+    .replace(/\.goog\.ui\.Component.*/, "")
+    .replace(/\.goog\.events\.EventTarget.*/, "");
 };
 
 const generateId = (() => {
@@ -14,7 +21,7 @@ const generateId = (() => {
   return () => `id${id++}`;
 })();
 
-const setup = () => {
+const setupEnterDocumentHook = () => {
   const org: Function = goog.ui.Component.prototype.enterDocument;
 
   goog.ui.Component.prototype.enterDocument = function () {
@@ -27,6 +34,45 @@ const setup = () => {
 
     return org.apply(this, arguments);
   };
+};
+
+const dispatchArgumentToString = (argumentsValue: IArguments) => {
+  try {
+    return JSON.stringify(argumentsValue[0]);
+  } catch (e) {
+    return "{}";
+  }
+};
+
+const getDispacthedEventName = (arg: unknown) => {
+  if (typeof arg === "string") return arg;
+  if (typeof arg === "object" && "type" in arg! && typeof (arg as any).type === "string") return `type:${(arg as any).type}`;
+  return "(unknown)";
+};
+
+const setupEventDispatchHook = () => {
+  const org: Function = goog.events.EventTarget.prototype.dispatchEvent;
+
+  goog.events.EventTarget.prototype.dispatchEvent = function () {
+    const eventName = getDispacthedEventName(arguments[0]);
+
+    document.dispatchEvent(
+      new CustomEvent<EventDispatchEventObject>(EventDispatchedEventName, {
+        detail: {
+          eventName,
+          moduleName: getCurrentModuleName(),
+          eventDetail: dispatchArgumentToString(arguments),
+          timestamp: new Date().getTime(),
+        },
+      })
+    );
+    return org.apply(this, arguments);
+  };
+};
+
+const setup = () => {
+  setupEnterDocumentHook();
+  setupEventDispatchHook();
 };
 
 window.__CLOSURE_TOOLS_DEVTOOLS__ = {

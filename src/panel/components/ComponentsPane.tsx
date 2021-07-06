@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "../modules/store";
 import searchSVG from "../resources/search_black_24dp.svg";
 import { ClosureComponentTree } from "./ClosureComponentTree";
 
-export const ComponentsPane: React.FC = () => {
+export const ComponentsPane: React.FC<{ show: boolean }> = (props) => {
   const dispatch = useDispatch();
 
   const components = useSelector((state) => state.panel.components);
@@ -25,8 +25,8 @@ export const ComponentsPane: React.FC = () => {
   };
 
   return (
-    <>
-      <section className="fixed w-full bg-white h-[32px] flex items-center z-50">
+    <div className={classNames({ hidden: !props.show })}>
+      <section className={classNames("fixed w-full bg-white h-[32px] items-center z-50 flex")}>
         <button
           type="button"
           onClick={handleHighlightButton}
@@ -40,6 +40,6 @@ export const ComponentsPane: React.FC = () => {
       <section className="pt-[32px]">
         <ClosureComponentTree components={components} depth={1} />
       </section>
-    </>
+    </div>
   );
 };

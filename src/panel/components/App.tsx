@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ComponentsPane } from "./ComponentsPane";
+import { EventsPane } from "./EventsPane";
 import { Tab } from "./Tab";
 
 type Pane = "Components" | "Events";
@@ -18,7 +19,8 @@ export const App: React.FC<{}> = () => {
         </Tab>
       </header>
       <main className="relative pt-[32px]">
-        <ComponentsPane />
+        <ComponentsPane show={activePane === "Components"} />
+        <EventsPane show={activePane === "Events"} />
       </main>
     </>
   );

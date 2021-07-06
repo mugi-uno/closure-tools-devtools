@@ -1,4 +1,4 @@
-import { ClosureComponentType } from "./types";
+import { ClosureComponentType, EventDispatchEventObject } from "./types";
 
 export const CONTENT_PORT_NAME = "content";
 export const PANEL_PORT_NAME = "panel";
@@ -30,7 +30,8 @@ export type PanelMessages =
 // Messages from Content
 export type ContentMessages =
   | { type: "SELECTED_ACTIVE_ELEMENT"; payload: { id: string; name: string } }
-  | { type: "SCANNED_COMPONENTS"; payload: { components: ClosureComponentType[] } };
+  | { type: "SCANNED_COMPONENTS"; payload: { components: ClosureComponentType[] } }
+  | { type: "EVENT_DISPATCHED"; payload: { event: EventDispatchEventObject } };
 
 export type Messages = PanelMessages | ContentMessages;
 export type MatchMessage<M, K extends Messages["type"]> = M extends { type: K } ? M : never;

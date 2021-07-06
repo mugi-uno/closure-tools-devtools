@@ -12,6 +12,9 @@ export const listener = (dispatch: AppDispatch) => {
     SCANNED_COMPONENTS: (msg) => {
       dispatch(actions.detectedComponents(msg.payload.components));
     },
+    EVENT_DISPATCHED: (msg) => {
+      dispatch(actions.eventDispached(msg.payload.event));
+    },
   };
 
   currentPort()?.onMessage.addListener((msg: ContentMessages) => {
