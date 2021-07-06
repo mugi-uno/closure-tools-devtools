@@ -2,7 +2,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const path = require("path");
 
-module.exports = {
+module.exports = (env, argv) => ({
   entry: {
     panel: path.resolve(__dirname, "./src/panel/panel.tsx"),
     devtools: path.resolve(__dirname, "./src/devtools/devtools.ts"),
@@ -23,7 +23,7 @@ module.exports = {
         test: /\.tsx?$/,
         loader: "ts-loader",
         options: {
-          transpileOnly: process.env.NODE_ENV !== "production",
+          transpileOnly: argv.mode !== "production",
         },
       },
       {
@@ -48,5 +48,5 @@ module.exports = {
       patterns: [{ from: "manifest.json" }, { from: "src/activator/setup.js" }, { from: "resources/icon-*.png" }],
     }),
   ],
-  devtool: "source-map",
-};
+  devtool: argv.mode !== "production" ? "source-map" : false,
+});
