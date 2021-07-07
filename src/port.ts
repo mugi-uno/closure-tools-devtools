@@ -2,11 +2,10 @@ import { ClosureComponentType, EventDispatchEventObject } from "./types";
 
 export const CONTENT_PORT_NAME = "content";
 export const PANEL_PORT_NAME = "panel";
-export type PORT_NAME = typeof CONTENT_PORT_NAME | typeof PANEL_PORT_NAME;
 
 let port: chrome.runtime.Port | null = null;
 
-export const connect = (name: PORT_NAME) => {
+export const connect = (name: string) => {
   port?.disconnect();
   port = chrome.runtime.connect({ name });
   return port;

@@ -1,39 +1,52 @@
-import { PORT_NAME } from "../port";
+import { CONTENT_PORT_NAME } from "./../port";
+import { PANEL_PORT_NAME } from "../port";
 
 const twoWayBridge = () => {
-  let portOfPanel: chrome.runtime.Port | null = null;
-  let portOfContent: chrome.runtime.Port | null = null;
+  const portMap = new Map<number, { panel: chrome.runtime.Port | null; content: chrome.runtime.Port | null }>();
+
+  const getPortPair = (tabId: number) => {
+    if (!portMap.has(tabId)) {
+      portMap.set(tabId, { panel: null, content: null });
+    }
+    return portMap.get(tabId)!;
+  };
 
   chrome.runtime.onConnect.addListener((port) => {
-    if ((port.name as PORT_NAME) !== "panel") return;
+    if (!port.name.startsWith(PANEL_PORT_NAME)) return;
 
-    console.log("background <--> panel connected.");
-    portOfPanel = port;
+    const tabId = +port.name.replace(PANEL_PORT_NAME, "");
+
+    console.log(`[${tabId}] background <--> panel connected.`);
+    getPortPair(tabId)["panel"] = port;
 
     port.onDisconnect.addListener(() => {
-      portOfPanel = null;
+      getPortPair(tabId)["panel"] = null;
     });
 
     port.onMessage.addListener((msg) => {
       // relay panel → background → content
-      portOfContent?.postMessage(msg);
+      getPortPair(tabId).content?.postMessage(msg);
       return false;
     });
   });
 
   chrome.runtime.onConnect.addListener((port) => {
-    if ((port.name as PORT_NAME) !== "content") return;
+    if (port.name !== CONTENT_PORT_NAME) return;
+    if (!port.sender?.tab) return;
+    if (port.sender.tab.id === undefined) return;
 
-    console.log("background <--> content connected.");
-    portOfContent = port;
+    const tabId = port.sender.tab.id;
+
+    console.log(`[${tabId}] background <--> content connected.`);
+    getPortPair(tabId)["content"] = port;
 
     port.onDisconnect.addListener(() => {
-      portOfContent = null;
+      getPortPair(tabId)["content"] = null;
     });
 
     port.onMessage.addListener((msg) => {
       // relay content → background → panel
-      portOfPanel?.postMessage(msg);
+      getPortPair(tabId).panel?.postMessage(msg);
       return false;
     });
   });
