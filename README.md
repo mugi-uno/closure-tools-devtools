@@ -21,12 +21,9 @@ Add the following code to your application
 goog.require("goog.ui.Component");
 goog.require("goog.events.EventTarget");
 
-closuretoolsdevtools.setup = function () {
-  if (!window["__CLOSURE_TOOLS_DEVTOOLS__"]) {
-    return;
-  }
+if (goog.DEBUG && window["__CLOSURE_TOOLS_DEVTOOLS__"]) {
   window["__CLOSURE_TOOLS_DEVTOOLS__"].setup();
-};
+}
 ```
 
 If you are using Closure Compiler, you can also add `src/activator/setup.js` to dependencies.
