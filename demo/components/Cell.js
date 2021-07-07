@@ -14,6 +14,7 @@ demo.components.Cell.prototype.createDom = function () {
 };
 
 demo.components.Cell.prototype.enterDocument = function () {
+  demo.components.Cell.base(this, "enterDocument");
   this.getHandler().listen(this.getElement(), goog.events.EventType.CLICK, () => {
     this.dispatchEvent({ type: "dummyEvent" });
   });
