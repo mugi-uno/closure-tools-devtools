@@ -6,7 +6,12 @@ import { App } from "./components/App";
 import { listener } from "./listener";
 import { store } from "./modules/store";
 
-connect(PANEL_PORT_NAME + chrome.devtools.inspectedWindow.tabId);
+const connectApp = () => {
+  connect(PANEL_PORT_NAME + chrome.devtools.inspectedWindow.tabId);
+};
+connectApp();
+chrome.devtools.network.onNavigated.addListener(connectApp);
+
 listener(store.dispatch);
 
 ReactDOM.render(

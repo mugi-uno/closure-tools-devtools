@@ -73,8 +73,10 @@ const setupEventDispatchHook = () => {
 const setup = () => {
   setupEnterDocumentHook();
   setupEventDispatchHook();
+  window.__CLOSURE_TOOLS_DEVTOOLS__.activated = true;
 };
 
 window.__CLOSURE_TOOLS_DEVTOOLS__ = {
   setup: setup,
+  activated: false,
 };

@@ -16,11 +16,12 @@ const twoWayBridge = () => {
 
     const tabId = +port.name.replace(PANEL_PORT_NAME, "");
 
-    console.log(`[${tabId}] background <--> panel connected.`);
+    console.log(`[${tabId}] 🔌 background <--> panel connected.`);
     getPortPair(tabId)["panel"] = port;
 
     port.onDisconnect.addListener(() => {
       getPortPair(tabId)["panel"] = null;
+      console.log(`[${tabId}] 👋 background <--> panel disconnected.`);
     });
 
     port.onMessage.addListener((msg) => {
@@ -37,11 +38,12 @@ const twoWayBridge = () => {
 
     const tabId = port.sender.tab.id;
 
-    console.log(`[${tabId}] background <--> content connected.`);
+    console.log(`[${tabId}] 🔌 background <--> content connected.`);
     getPortPair(tabId)["content"] = port;
 
     port.onDisconnect.addListener(() => {
       getPortPair(tabId)["content"] = null;
+      console.log(`[${tabId}] 👋 background <--> panel disconnected.`);
     });
 
     port.onMessage.addListener((msg) => {
