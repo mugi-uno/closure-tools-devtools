@@ -26,7 +26,15 @@ if (goog.DEBUG && window["__CLOSURE_TOOLS_DEVTOOLS__"]) {
 }
 ```
 
-If you are using Closure Compiler, you can also add `src/activator/setup.js` to dependencies.
+If you are using Closure Compiler, you can also add `src/activator/setup.js` to dependencies and add the following code to your application.
+
+```js
+goog.require("closuretoolsdevtools.setup");
+
+if (goog.DEBUG) {
+  closuretoolsdevtools.setup();
+}
+```
 
 Licence
 =====
