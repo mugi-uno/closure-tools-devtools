@@ -24,6 +24,13 @@ export const { actions, reducer } = createSlice({
   name: "panel",
   initialState,
   reducers: {
+    reset(state) {
+      state.highlightEnabled = false;
+      state.selectedElement = null;
+      state.components = [];
+      state.flatComponents = [];
+      state.events = [];
+    },
     selectElement(state, action: PayloadAction<State["selectedElement"]>) {
       state.selectedElement = action.payload;
       state.highlightEnabled = false;

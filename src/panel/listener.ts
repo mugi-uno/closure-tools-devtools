@@ -1,8 +1,8 @@
-import { currentPort, MatchMessage, ContentMessages } from "./../port";
+import { MatchMessage, ContentMessages } from "./../port";
 import { actions } from "./modules/slice";
 import { AppDispatch } from "./modules/store";
 
-export const listener = (dispatch: AppDispatch) => {
+export const listener = (dispatch: AppDispatch, port: chrome.runtime.Port) => {
   const handlerMap: {
     [key in ContentMessages["type"]]?: (msg: MatchMessage<ContentMessages, key>) => void;
   } = {
@@ -17,7 +17,7 @@ export const listener = (dispatch: AppDispatch) => {
     },
   };
 
-  currentPort()?.onMessage.addListener((msg: ContentMessages) => {
+  port.onMessage.addListener((msg: ContentMessages) => {
     const handler = handlerMap[msg.type];
     if (handler) {
       handler(msg as any);
