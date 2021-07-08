@@ -27,7 +27,7 @@ const twoWayBridge = () => {
     port.onMessage.addListener((msg) => {
       // relay panel → background → content
       getPortPair(tabId).content?.postMessage(msg);
-      console.log(`[${tabId}] 📦 panel ---> background ---> content : ${msg.type}`);
+      console.log(`[${tabId}] 📦 panel ---> background ---> content : ${msg.type}`, msg);
       return false;
     });
   });
@@ -50,7 +50,7 @@ const twoWayBridge = () => {
     port.onMessage.addListener((msg) => {
       // relay content → background → panel
       getPortPair(tabId).panel?.postMessage(msg);
-      console.log(`[${tabId}] 📦 content ---> background ---> panel : ${msg.type}`);
+      console.log(`[${tabId}] 📦 content ---> background ---> panel : ${msg.type}`, msg);
       return false;
     });
   });

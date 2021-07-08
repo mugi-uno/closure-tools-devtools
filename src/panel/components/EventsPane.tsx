@@ -21,7 +21,7 @@ export const EventsPane: React.FC<{ show: boolean }> = (props) => {
   const events = useSelector((state) =>
     state.panel.events
       .slice()
-      .filter((e) => !hideGoogEvents || !e.moduleName.match(/^goog\./))
+      .filter((e) => !hideGoogEvents || !e.event.moduleName.match(/^goog\./))
       .reverse()
   );
 
@@ -48,8 +48,8 @@ export const EventsPane: React.FC<{ show: boolean }> = (props) => {
       <section className="pt-[32px]">
         {events.length ? (
           <>
-            {events.map((event) => (
-              <div className="border-b font-mono p-1">
+            {events.map(({ id, event }) => (
+              <div className="border-b font-mono p-1" key={id}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <span className="text-sm">{event.moduleName}</span>

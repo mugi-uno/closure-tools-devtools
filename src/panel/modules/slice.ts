@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { generateID } from "../../lib/generateID";
 import { postMessage } from "../../port";
 import { ClosureComponentType, EventDispatchEventObject } from "../../types";
 
@@ -9,7 +10,7 @@ interface State {
   } | null;
   components: ClosureComponentType[];
   flatComponents: ClosureComponentType[];
-  events: EventDispatchEventObject[];
+  events: { id: string; event: EventDispatchEventObject }[];
 }
 
 const initialState: State = {
@@ -76,7 +77,7 @@ export const { actions, reducer } = createSlice({
       state.selectedElement = { id: newSelected.id };
     },
     eventDispached(state, action: PayloadAction<EventDispatchEventObject>) {
-      state.events.push(action.payload);
+      state.events.push({ id: generateID(), event: action.payload });
     },
     clearDispatchedEvents(state) {
       state.events = [];

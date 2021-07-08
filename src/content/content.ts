@@ -48,7 +48,9 @@ document.addEventListener(EventDispatchedEventName, (e) => {
 document.addEventListener(
   "DOMContentLoaded",
   () => {
-    scanComponents();
+    setTimeout(() => {
+      scanComponents();
+    }, 100);
   },
   { once: true }
 );

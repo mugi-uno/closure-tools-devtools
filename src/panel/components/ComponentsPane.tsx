@@ -13,10 +13,6 @@ export const ComponentsPane: React.FC<{ show: boolean }> = (props) => {
   const components = useSelector((state) => state.panel.components);
   const highlightEnabled = useSelector((state) => state.panel.highlightEnabled);
 
-  useEffect(() => {
-    postMessage({ type: "SCAN_COMPONENTS" });
-  }, []);
-
   const handleHighlightButton = () => {
     if (highlightEnabled) {
       dispatch(actions.disableHighlight());
