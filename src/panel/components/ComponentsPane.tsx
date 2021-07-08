@@ -20,7 +20,7 @@ export const ComponentsPane: React.FC<{ show: boolean }> = (props) => {
       if (autoRefresh && props.show) {
         postMessage({ type: "SCAN_COMPONENTS" });
       }
-    }, 3000);
+    }, 2000);
 
     return () => clearInterval(refreshInterval);
   }, [autoRefresh, props.show]);

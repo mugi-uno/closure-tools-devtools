@@ -16,11 +16,27 @@ export const ClosureComponent: React.FC<Props> = (props) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const [openTree, setOpenTree] = useState(true);
+  const [isRendering, setIsRendering] = useState(true);
+  const [isRendered, setIsRendered] = useState(false);
   const selectedElement = useSelector((state) => state.panel.selectedElement);
   const hasChildComponents = props.component.childComponents.length > 0;
   const isSelected = selectedElement?.id === props.component.id;
 
   const { component } = props;
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsRendering(false);
+    }, 10);
+  }, []);
+
+  useEffect(() => {
+    if (!isRendering) {
+      setTimeout(() => {
+        setIsRendered(true);
+      }, 700);
+    }
+  }, [isRendering]);
 
   const handleOpenTree: MouseEventHandler = (event) => {
     event.preventDefault();
@@ -66,10 +82,16 @@ export const ClosureComponent: React.FC<Props> = (props) => {
   return (
     <>
       <div
-        className={classNames("text-sm text-gray-800 font-mono py-0.5 transition-all cursor-pointer select-none focus:outline-none", {
-          "bg-red-400": isSelected,
-          "hover:bg-gray-200": !isSelected,
-        })}
+        className={classNames(
+          "text-sm text-gray-800 font-mono py-0.5 transition-all cursor-pointer select-none focus:outline-none bg-white",
+          {
+            "bg-red-100": isRendering,
+            "duration-100": isRendered,
+            "duration-700": !isRendered,
+            "bg-red-400": isSelected,
+            "hover:bg-gray-200": !isSelected,
+          }
+        )}
         onClick={handleClick}
         onMouseOver={handleMouserOver}
         onMouseLeave={handeMouseLeave}

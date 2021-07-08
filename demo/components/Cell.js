@@ -1,21 +1,32 @@
 goog.provide("demo.components.Cell");
 goog.require("goog.ui.Component");
 
-demo.components.Cell = function () {
+demo.components.Cell = function ({ innerElement, task }) {
   goog.ui.Component.call(this);
+
+  this.innerElement = innerElement;
+  this.task = task;
 };
 
 goog.inherits(demo.components.Cell, goog.ui.Component);
 
 demo.components.Cell.prototype.createDom = function () {
   const cell = this.getDomHelper().createDom(goog.dom.TagName.TD);
-  cell.innerText = "cell";
-  this.setElementInternal(cell);
-};
 
-demo.components.Cell.prototype.enterDocument = function () {
-  demo.components.Cell.base(this, "enterDocument");
-  this.getHandler().listen(this.getElement(), goog.events.EventType.CLICK, () => {
-    this.dispatchEvent({ type: "dummyEvent" });
-  });
+  cell.setAttribute(
+    "style",
+    `
+    padding: 8px;
+    `
+  );
+
+  if (this.innerElement) {
+    cell.appendChild(this.innerElement);
+  }
+  if (this.task) {
+    this.addChild(this.task);
+    this.task.render(cell);
+  }
+
+  this.setElementInternal(cell);
 };

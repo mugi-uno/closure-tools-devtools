@@ -2,7 +2,7 @@ import { findAllModules, findClosestModule, getModuleAttributes } from "./util";
 import { postMessage } from "../port";
 import { ClosureComponentType } from "../types";
 
-export const scan = (rootElement: Element = document.body): ClosureComponentType[] => {
+export const scan = (rootElement: Element): ClosureComponentType[] => {
   return findAllModules(rootElement)
     .filter((el) => {
       if (!el.parentElement) return true;
@@ -19,7 +19,9 @@ export const scan = (rootElement: Element = document.body): ClosureComponentType
 };
 
 export const scanComponents = () => {
-  const components = scan();
+  if (!document.body) return;
+
+  const components = scan(document.body);
   postMessage({
     type: "SCANNED_COMPONENTS",
     payload: { components },
