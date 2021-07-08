@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import clearSVG from "../resources/clear_black_24dp.svg";
 import { useDispatch, useSelector } from "../modules/store";
 import { actions } from "../modules/slice";
+import { Checkbox } from "./Checkbox";
 
 const getDateString = (timestamp: number) => {
   const date = new Date(timestamp);
@@ -39,10 +40,8 @@ export const EventsPane: React.FC<{ show: boolean }> = (props) => {
         <button type="button" onClick={handleClear} className={classNames("rounded-full border cursor-pointer m-1 p-0.5 transition-all")}>
           <img src={clearSVG} className="object-contain w-[16px]" />
         </button>
-        <label className="flex items-center pr-2">
-          <input type="checkbox" className="mr-0.5" onChange={handleHideGoogEvents} checked={hideGoogEvents} />
-          <span>Hide "goog.*" events</span>
-        </label>
+
+        <Checkbox label={'Hide "goog.*" events'} onChange={handleHideGoogEvents} checked={hideGoogEvents} />
       </section>
 
       <section className="pt-[32px]">
