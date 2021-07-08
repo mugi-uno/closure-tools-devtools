@@ -26,7 +26,8 @@ export const highlight = (elementOrId: Element | string) => {
     top: ${rect.y + window.pageYOffset}px;
     width: ${rect.width}px;
     height: ${rect.height}px;
-    border: 4px solid red;
+    border: 2px solid red;
+    background: rgb(255 255 120 / 30%);
     box-sizing: border-box;
     opacity: 0.6;
     pointer-events: none;
