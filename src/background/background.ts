@@ -11,7 +11,7 @@ const twoWayBridge = () => {
     return portMap.get(tabId)!;
   };
 
-  chrome.runtime.onConnect.addListener((port) => {
+  const panelMessageListener = (port: chrome.runtime.Port) => {
     if (!port.name.startsWith(PANEL_PORT_NAME)) return;
 
     const tabId = +port.name.replace(PANEL_PORT_NAME, "");
@@ -30,9 +30,9 @@ const twoWayBridge = () => {
       console.log(`[${tabId}] 📦 panel ---> background ---> content : ${msg.type}`, msg);
       return false;
     });
-  });
+  };
 
-  chrome.runtime.onConnect.addListener((port) => {
+  const contentMessageListener = (port: chrome.runtime.Port) => {
     if (port.name !== CONTENT_PORT_NAME) return;
     if (!port.sender?.tab) return;
     if (port.sender.tab.id === undefined) return;
@@ -53,6 +53,11 @@ const twoWayBridge = () => {
       console.log(`[${tabId}] 📦 content ---> background ---> panel : ${msg.type}`, msg);
       return false;
     });
+  };
+
+  chrome.runtime.onConnect.addListener((port) => {
+    panelMessageListener(port);
+    contentMessageListener(port);
   });
 };
 
