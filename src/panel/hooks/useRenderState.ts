@@ -7,14 +7,14 @@ export const useRenderState = () => {
   useEffect(() => {
     setTimeout(() => {
       setIsRendering(false);
-    }, 10);
+    }, 1);
   }, []);
 
   useEffect(() => {
     if (!isRendering) {
       setTimeout(() => {
         setIsRendered(true);
-      }, 10);
+      }, 1000);
     }
   }, [isRendering]);
 
