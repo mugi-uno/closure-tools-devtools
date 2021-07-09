@@ -4,15 +4,7 @@ import clearSVG from "../resources/clear_black_24dp.svg";
 import { useDispatch, useSelector } from "../modules/store";
 import { actions } from "../modules/slice";
 import { Checkbox } from "./Checkbox";
-
-const getDateString = (timestamp: number) => {
-  const date = new Date(timestamp);
-  const hours = `${date.getHours()}`.padStart(2, "0");
-  const minutes = `${date.getMinutes()}`.padStart(2, "0");
-  const seconds = `${date.getSeconds()}`.padStart(2, "0");
-  const milliseconds = `${date.getMilliseconds()}`.padEnd(3, "0");
-  return `${hours}:${minutes}:${seconds}.${milliseconds}`;
-};
+import { EventItem } from "./EventItem";
 
 export const EventsPane: React.FC<{ show: boolean }> = (props) => {
   const [hideGoogEvents, setHideGoogEvents] = useState(true);
@@ -48,16 +40,7 @@ export const EventsPane: React.FC<{ show: boolean }> = (props) => {
         {events.length ? (
           <>
             {events.map(({ id, event }) => (
-              <div className="border-b font-mono p-1" key={id}>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <span className="text-sm">{event.moduleName}</span>
-                    <span className="rounded text-white bg-red-400 text-[10px] px-1 py-0.5 ml-2 font-bold">{event.eventName}</span>
-                  </div>
-                  <span className="text-[10px] text-gray-700">{getDateString(event.timestamp)}</span>
-                </div>
-                <div className="text-[10px] text-gray-700">{event.eventDetail}</div>
-              </div>
+              <EventItem event={event} key={id} />
             ))}
           </>
         ) : (

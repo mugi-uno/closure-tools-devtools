@@ -2,6 +2,7 @@ import classNames from "classnames";
 import React, { createRef, KeyboardEventHandler, MouseEventHandler, useEffect, useRef, useState } from "react";
 import { postMessage } from "../../port";
 import { ClosureComponentType } from "../../types";
+import { useRenderState } from "../hooks/useRenderState";
 import { actions } from "../modules/slice";
 import { useDispatch, useSelector } from "../modules/store";
 import { ClosureComponentTree } from "./ClosureComponentTree";
@@ -16,27 +17,13 @@ export const ClosureComponent: React.FC<Props> = (props) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const [openTree, setOpenTree] = useState(true);
-  const [isRendering, setIsRendering] = useState(true);
-  const [isRendered, setIsRendered] = useState(false);
+  const { renderStateClassObject } = useRenderState();
+
   const selectedElement = useSelector((state) => state.panel.selectedElement);
   const hasChildComponents = props.component.childComponents.length > 0;
   const isSelected = selectedElement?.id === props.component.id;
 
   const { component } = props;
-
-  useEffect(() => {
-    setTimeout(() => {
-      setIsRendering(false);
-    }, 10);
-  }, []);
-
-  useEffect(() => {
-    if (!isRendering) {
-      setTimeout(() => {
-        setIsRendered(true);
-      }, 700);
-    }
-  }, [isRendering]);
 
   const handleOpenTree: MouseEventHandler = (event) => {
     event.preventDefault();
@@ -85,9 +72,7 @@ export const ClosureComponent: React.FC<Props> = (props) => {
         className={classNames(
           "text-sm text-gray-800 font-mono py-0.5 transition-all cursor-pointer select-none focus:outline-none bg-white",
           {
-            "bg-red-100": isRendering,
-            "duration-100": isRendered,
-            "duration-700": !isRendered,
+            ...renderStateClassObject,
             "bg-red-400": isSelected,
             "hover:bg-gray-200": !isSelected,
           }
