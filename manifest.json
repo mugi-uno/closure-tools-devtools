@@ -1,8 +1,8 @@
 {
   "name": "Closure Tools DevTools",
   "description": "DevTools for Google Closure Tools",
-  "version": "1.0",
-  "manifest_version": 3,
+  "version": "1.1",
+  "manifest_version": 2,
   "icons": {
     "16": "resources/icon-16x16.png",
     "48": "resources/icon-48x48.png",
@@ -10,9 +10,8 @@
   },
   "devtools_page": "devtools.html",
   "permissions": [],
-  "host_permissions": ["*://*/*"],
   "background": {
-    "service_worker": "background.js"
+    "scripts": ["background.js"]
   },
   "content_scripts": [
     {
@@ -21,10 +20,5 @@
       "run_at": "document_start"
     }
   ],
-  "web_accessible_resources": [
-    {
-      "matches": ["<all_urls>"],
-      "resources": ["setupDevTools.js"]
-    }
-  ]
+  "web_accessible_resources": ["setupDevTools.js"]
 }
