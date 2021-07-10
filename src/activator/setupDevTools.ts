@@ -12,37 +12,43 @@ const getCurrentModuleName = () => {
 };
 
 const stringifyComponent = (component: any) => {
-  JSON.stringify(component, (k, v) => {
-    if (
-      [
-        "actualEventTarget_",
-        "childIndex_",
-        "children_",
-        "disposed_",
-        "dom_",
-        "element_",
-        "eventTargetListeners_",
-        "inDocument_",
-        "model_",
-        "parent_",
-        "parentEventTarget_",
-        "pointerEventsEnabled_",
-        "rightToLeft_",
-        "wasDecorated_",
-      ].includes(k)
-    ) {
-      return undefined;
-    }
+  try {
+    return JSON.stringify(component, (k, v) => {
+      if (
+        [
+          "actualEventTarget_",
+          "childIndex_",
+          "children_",
+          "disposed_",
+          "dom_",
+          "element_",
+          "eventTargetListeners_",
+          "inDocument_",
+          "model_",
+          "parent_",
+          "parentEventTarget_",
+          "pointerEventsEnabled_",
+          "rightToLeft_",
+          "wasDecorated_",
+          "__devtools__",
+        ].includes(k)
+      ) {
+        return undefined;
+      }
 
-    if (component !== v && typeof v === "object" && v && "id_" in v) {
-      return "<Component>";
-    }
+      if (component !== v && typeof v === "object" && v && "id_" in v) {
+        return "<Component>";
+      }
 
-    return v;
-  });
+      return v;
+    });
+  } catch (e) {
+    return '"invalid"';
+  }
 };
 
 const componentMap: { [key: string]: any } = {};
+window.componentMap = componentMap;
 
 const setupEnterDocumentHook = () => {
   const org: Function = goog.ui.Component.prototype.enterDocument;
@@ -121,7 +127,16 @@ const setup = () => {
   window.__CLOSURE_TOOLS_DEVTOOLS__.activated = true;
 };
 
+const getComponentData = (id: string): string => {
+  if (!componentMap[id]) {
+    return '"unknown"';
+  }
+
+  return stringifyComponent(componentMap[id]);
+};
+
 window.__CLOSURE_TOOLS_DEVTOOLS__ = {
-  setup: setup,
+  setup,
+  getComponentData,
   activated: false,
 };
