@@ -11,6 +11,39 @@ const getCurrentModuleName = () => {
     .replace(/\.goog\.events\.EventTarget.*/, "");
 };
 
+const stringifyComponent = (component: any) => {
+  JSON.stringify(component, (k, v) => {
+    if (
+      [
+        "actualEventTarget_",
+        "childIndex_",
+        "children_",
+        "disposed_",
+        "dom_",
+        "element_",
+        "eventTargetListeners_",
+        "inDocument_",
+        "model_",
+        "parent_",
+        "parentEventTarget_",
+        "pointerEventsEnabled_",
+        "rightToLeft_",
+        "wasDecorated_",
+      ].includes(k)
+    ) {
+      return undefined;
+    }
+
+    if (component !== v && typeof v === "object" && v && "id_" in v) {
+      return "<Component>";
+    }
+
+    return v;
+  });
+};
+
+const componentMap: { [key: string]: any } = {};
+
 const setupEnterDocumentHook = () => {
   const org: Function = goog.ui.Component.prototype.enterDocument;
 
@@ -19,8 +52,29 @@ const setupEnterDocumentHook = () => {
       return org.apply(this, arguments);
     }
 
-    this.element_.setAttribute(MODULE_NAME_ATTRIBUTE_NAME, getCurrentModuleName());
-    this.element_.setAttribute(ID_ATRRIBUTE_NAME, generateID());
+    const id = generateID();
+
+    this.__devtools__ = {
+      id,
+      name: getCurrentModuleName(),
+    };
+
+    componentMap[id] = this;
+
+    this.element_.setAttribute(MODULE_NAME_ATTRIBUTE_NAME, this.__devtools__.name);
+    this.element_.setAttribute(ID_ATRRIBUTE_NAME, this.__devtools__.id);
+
+    return org.apply(this, arguments);
+  };
+};
+
+const setupDisposeHook = () => {
+  const org: Function = goog.ui.Component.prototype.dispose;
+
+  goog.ui.Component.prototype.dispose = function () {
+    if (this.__devtools__) {
+      delete componentMap[this.__devtools__.id];
+    }
 
     return org.apply(this, arguments);
   };
@@ -62,6 +116,7 @@ const setupEventDispatchHook = () => {
 
 const setup = () => {
   setupEnterDocumentHook();
+  setupDisposeHook();
   setupEventDispatchHook();
   window.__CLOSURE_TOOLS_DEVTOOLS__.activated = true;
 };
