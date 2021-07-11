@@ -5,7 +5,6 @@ goog.require("goog.ui.Component");
 demo.components.Table = function () {
   goog.ui.Component.call(this);
 
-  this.tasks = 2;
   this.rows = [];
 };
 
@@ -23,19 +22,15 @@ demo.components.Table.prototype.createDom = function () {
     `
   );
 
-  for (let i = 0; i < this.tasks; i++) {
-    const row = new demo.components.Row(i + 1);
-    this.addChild(row);
-    row.render(element);
-    this.rows.push(row);
-  }
-
   this.setElementInternal(element);
+
+  for (let i = 0; i < 2; i++) {
+    this.addRow();
+  }
 };
 
 demo.components.Table.prototype.addRow = function () {
-  this.tasks += 1;
-  const row = new demo.components.Row(this.tasks);
+  const row = new demo.components.Row(this.rows.length);
   this.addChild(row);
   row.render(this.getElement());
   this.rows.push(row);
@@ -44,4 +39,13 @@ demo.components.Table.prototype.addRow = function () {
 demo.components.Table.prototype.removeRow = function (index) {
   this.rows[index].dispose();
   this.rows.splice(index, 1);
+
+  this.refreshIndex();
+};
+
+demo.components.Table.prototype.refreshIndex = function () {
+  // refresh index
+  this.rows.forEach((row, index) => {
+    row.updateIndex(index);
+  });
 };

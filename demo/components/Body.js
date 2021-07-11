@@ -31,4 +31,8 @@ demo.components.Body.prototype.enterDocument = function () {
   this.listen("AddTask", () => {
     this.table.addRow();
   });
+
+  this.listen("RemoveRow", (msg) => {
+    this.table.removeRow(msg.payload.index);
+  });
 };

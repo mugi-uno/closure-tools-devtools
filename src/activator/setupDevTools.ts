@@ -48,7 +48,6 @@ const stringifyComponent = (component: any) => {
 };
 
 const componentMap: { [key: string]: any } = {};
-window.componentMap = componentMap;
 
 const setupEnterDocumentHook = () => {
   const org: Function = goog.ui.Component.prototype.enterDocument;

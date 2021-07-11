@@ -1,11 +1,11 @@
 goog.provide("demo.components.Cell");
 goog.require("goog.ui.Component");
 
-demo.components.Cell = function ({ innerElement, task }) {
+demo.components.Cell = function ({ innerElement, childComponent }) {
   goog.ui.Component.call(this);
 
   this.innerElement = innerElement;
-  this.task = task;
+  this.childComponent = childComponent;
 };
 
 goog.inherits(demo.components.Cell, goog.ui.Component);
@@ -23,9 +23,9 @@ demo.components.Cell.prototype.createDom = function () {
   if (this.innerElement) {
     cell.appendChild(this.innerElement);
   }
-  if (this.task) {
-    this.addChild(this.task);
-    this.task.render(cell);
+  if (this.childComponent) {
+    this.addChild(this.childComponent);
+    this.childComponent.render(cell);
   }
 
   this.setElementInternal(cell);
