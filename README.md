@@ -4,13 +4,13 @@ GoogleChrome DevTools extension for [Closure Tools](https://developers.google.co
 
 ![](/media/image.gif)
 
-# Usage
+## Installation
 
-### Installation
+from [Chrome Web Store](https://chrome.google.com/webstore/detail/closure-tools-devtools/ccppdkklnjdncedigaakkicpncehojbp)
 
-- from [Chrome Web Store](https://chrome.google.com/webstore/detail/closure-tools-devtools/ccppdkklnjdncedigaakkicpncehojbp)
+🔗 Demo page : https://mugi-uno.github.io/closure-tools-devtools/
 
-### Setup
+## Usage
 
 Add the following code to your application
 
@@ -33,6 +33,6 @@ if (goog.DEBUG) {
 }
 ```
 
-# Licence
+## Licence
 
 MIT
