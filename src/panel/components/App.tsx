@@ -18,7 +18,7 @@ export const App: React.FC<{}> = () => {
           Events
         </Tab>
       </header>
-      <main className="relative pt-[32px]">
+      <main className="relative pt-[32px] flex w-full h-screen">
         <ComponentsPane show={activePane === "Components"} />
         <EventsPane show={activePane === "Events"} />
       </main>

@@ -1,4 +1,10 @@
-import { EventDispatchEventObject } from "./../types";
+import {
+  EventDispatchEventObject,
+  GetComponentDataRequestEventName,
+  GetComponentDataRequestEventObject,
+  GetComponentDataResponseEventName,
+  GetComponentDataResponseEventObject,
+} from "./../types";
 import { MatchMessage, PanelMessages, postMessage } from "./../port";
 import { connect } from "../port";
 import { disableHoverHook, enableHoverHook } from "./hoverHook";
@@ -17,6 +23,15 @@ const handlerMap: {
   },
   SCAN_COMPONENTS: () => {
     scanComponents();
+  },
+  GET_COMPONENT_DATA: (msg) => {
+    document.dispatchEvent(
+      new CustomEvent<GetComponentDataRequestEventObject>(GetComponentDataRequestEventName, {
+        detail: {
+          id: msg.payload.id,
+        },
+      })
+    );
   },
   HIGHLIGHT_ELEMENT: (msg) => {
     unhighlight();
@@ -43,6 +58,11 @@ script.parentNode.removeChild(script);
 document.addEventListener(EventDispatchedEventName, (e) => {
   const event = e as CustomEvent<EventDispatchEventObject>;
   postMessage({ type: "EVENT_DISPATCHED", payload: { event: event.detail } });
+});
+
+document.addEventListener(GetComponentDataResponseEventName, (e) => {
+  const event = e as CustomEvent<GetComponentDataResponseEventObject>;
+  postMessage({ type: "GET_COMPONENT_DATA", payload: { id: event.detail.id, dataJsonString: event.detail.data } });
 });
 
 document.addEventListener(

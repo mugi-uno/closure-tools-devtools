@@ -27,7 +27,7 @@ export const EventsPane: React.FC<{ show: boolean }> = (props) => {
   };
 
   return (
-    <div className={classNames({ hidden: !props.show })}>
+    <div className={classNames("w-full", { hidden: !props.show })}>
       <section className={classNames("fixed w-full bg-white h-[32px] items-center z-50 flex justify-between")}>
         <button type="button" onClick={handleClear} className={classNames("rounded-full border cursor-pointer m-1 p-0.5 transition-all")}>
           <img src={clearSVG} className="object-contain w-[16px]" />

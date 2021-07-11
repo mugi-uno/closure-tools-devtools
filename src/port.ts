@@ -24,11 +24,13 @@ export type PanelMessages =
   | { type: "DISABLE_HIGHLIGHT" }
   | { type: "HIGHLIGHT_ELEMENT"; payload: { id: string } }
   | { type: "UNHIGHLIGHT_ELEMENT" }
+  | { type: "GET_COMPONENT_DATA"; payload: { id: string } }
   | { type: "SCAN_COMPONENTS" };
 
 // Messages from Content
 export type ContentMessages =
   | { type: "SELECTED_ACTIVE_ELEMENT"; payload: { id: string; name: string } }
+  | { type: "GET_COMPONENT_DATA"; payload: { id: string; dataJsonString: string } }
   | { type: "SCANNED_COMPONENTS"; payload: { components: ClosureComponentType[] } }
   | { type: "EVENT_DISPATCHED"; payload: { event: EventDispatchEventObject } };
 

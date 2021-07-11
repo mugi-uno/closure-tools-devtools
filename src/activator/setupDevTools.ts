@@ -1,5 +1,14 @@
 import { generateID } from "../lib/generateID";
-import { EventDispatchedEventName, EventDispatchEventObject, ID_ATRRIBUTE_NAME, MODULE_NAME_ATTRIBUTE_NAME } from "../types";
+import {
+  EventDispatchedEventName,
+  EventDispatchEventObject,
+  GetComponentDataRequestEventName,
+  GetComponentDataRequestEventObject,
+  GetComponentDataResponseEventName,
+  GetComponentDataResponseEventObject,
+  ID_ATRRIBUTE_NAME,
+  MODULE_NAME_ATTRIBUTE_NAME,
+} from "../types";
 
 const getCurrentModuleName = () => {
   const stack = new Error().stack;
@@ -14,25 +23,7 @@ const getCurrentModuleName = () => {
 const stringifyComponent = (component: any) => {
   try {
     return JSON.stringify(component, (k, v) => {
-      if (
-        [
-          "actualEventTarget_",
-          "childIndex_",
-          "children_",
-          "disposed_",
-          "dom_",
-          "element_",
-          "eventTargetListeners_",
-          "inDocument_",
-          "model_",
-          "parent_",
-          "parentEventTarget_",
-          "pointerEventsEnabled_",
-          "rightToLeft_",
-          "wasDecorated_",
-          "__devtools__",
-        ].includes(k)
-      ) {
+      if (k.endsWith("_")) {
         return undefined;
       }
 
@@ -43,11 +34,20 @@ const stringifyComponent = (component: any) => {
       return v;
     });
   } catch (e) {
+    console.log(e);
     return '"invalid"';
   }
 };
 
 const componentMap: { [key: string]: any } = {};
+
+const getComponentData = (id: string): string => {
+  if (!componentMap[id]) {
+    return '"unknown"';
+  }
+
+  return stringifyComponent(componentMap[id]);
+};
 
 const setupEnterDocumentHook = () => {
   const org: Function = goog.ui.Component.prototype.enterDocument;
@@ -71,6 +71,19 @@ const setupEnterDocumentHook = () => {
 
     return org.apply(this, arguments);
   };
+
+  document.addEventListener(GetComponentDataRequestEventName, (event) => {
+    const e = event as CustomEvent<GetComponentDataRequestEventObject>;
+
+    document.dispatchEvent(
+      new CustomEvent<GetComponentDataResponseEventObject>(GetComponentDataResponseEventName, {
+        detail: {
+          id: e.detail.id,
+          data: getComponentData(e.detail.id),
+        },
+      })
+    );
+  });
 };
 
 const setupDisposeHook = () => {
@@ -123,19 +136,6 @@ const setup = () => {
   setupEnterDocumentHook();
   setupDisposeHook();
   setupEventDispatchHook();
-  window.__CLOSURE_TOOLS_DEVTOOLS__.activated = true;
 };
 
-const getComponentData = (id: string): string => {
-  if (!componentMap[id]) {
-    return '"unknown"';
-  }
-
-  return stringifyComponent(componentMap[id]);
-};
-
-window.__CLOSURE_TOOLS_DEVTOOLS__ = {
-  setup,
-  getComponentData,
-  activated: false,
-};
+window.__CLOSURE_TOOLS_DEVTOOLS__ = { setup };

@@ -9,6 +9,9 @@ export const listener = (dispatch: AppDispatch, port: chrome.runtime.Port) => {
     SELECTED_ACTIVE_ELEMENT: (msg) => {
       dispatch(actions.selectElement(msg.payload));
     },
+    GET_COMPONENT_DATA: (msg) => {
+      dispatch(actions.detectComponentData({ id: msg.payload.id, data: msg.payload.dataJsonString }));
+    },
     SCANNED_COMPONENTS: (msg) => {
       dispatch(actions.detectedComponents(msg.payload.components));
     },

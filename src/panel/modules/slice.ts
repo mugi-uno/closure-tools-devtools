@@ -7,6 +7,7 @@ interface State {
   highlightEnabled: boolean;
   selectedElement: {
     id: string;
+    data: unknown | null;
   } | null;
   components: ClosureComponentType[];
   flatComponents: ClosureComponentType[];
@@ -32,10 +33,20 @@ export const { actions, reducer } = createSlice({
       state.flatComponents = [];
       state.events = [];
     },
-    selectElement(state, action: PayloadAction<State["selectedElement"]>) {
-      state.selectedElement = action.payload;
+    selectElement(state, action: PayloadAction<{ id: string }>) {
+      state.selectedElement = { ...action.payload, data: null };
       state.highlightEnabled = false;
       postMessage({ type: "DISABLE_HIGHLIGHT" });
+      postMessage({ type: "GET_COMPONENT_DATA", payload: { id: action.payload.id } });
+    },
+    detectComponentData(state, action: PayloadAction<{ id: string; data: string }>) {
+      if (state.selectedElement && state.selectedElement.id === action.payload.id) {
+        try {
+          state.selectedElement.data = JSON.parse(action.payload.data);
+        } catch (e) {
+          state.selectedElement.data = null;
+        }
+      }
     },
     enableHighlight(state) {
       state.highlightEnabled = true;
@@ -74,7 +85,8 @@ export const { actions, reducer } = createSlice({
 
       const newSelected = state.flatComponents[action.payload.direction === "prev" ? index - 1 : index + 1];
 
-      state.selectedElement = { id: newSelected.id };
+      state.selectedElement = { id: newSelected.id, data: null };
+      postMessage({ type: "GET_COMPONENT_DATA", payload: { id: newSelected.id } });
     },
     eventDispached(state, action: PayloadAction<EventDispatchEventObject>) {
       state.events.push({ id: generateID(), event: action.payload });
