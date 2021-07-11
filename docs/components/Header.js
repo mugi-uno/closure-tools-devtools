@@ -11,7 +11,7 @@ demo.components.Header.prototype.createDom = function () {
   const element = this.getDomHelper().createDom(goog.dom.TagName.HEADER);
   const h2 = this.getDomHelper().createDom(goog.dom.TagName.H2);
 
-  h2.innerText = "My Application";
+  h2.innerText = "Closure Tools DevTools Demo";
   element.setAttribute(
     "style",
     `
@@ -19,6 +19,7 @@ demo.components.Header.prototype.createDom = function () {
     margin-bottom: 16px;
     `
   );
+
   element.appendChild(h2);
 
   this.setElementInternal(element);
