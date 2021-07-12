@@ -12,9 +12,11 @@ export const ComponentsPane: React.FC<{ show: boolean }> = (props) => {
 
   return (
     <section className={classNames("flex w-full", { hidden: !props.show })} {...splitPaneHandlers}>
-      <div className="max-h-full overflow-scroll relative" style={{ width: `${leftSize}px`, minWidth: `${leftSize}px` }}>
+      <div className="h-full relative" style={{ width: `${leftSize}px`, minWidth: `${leftSize}px` }}>
         <ComponentsPaneHeader show={props.show} />
-        <ClosureComponentTree components={components} depth={1} />
+        <div className="max-h-full overflow-scroll relative pt-[32px]">
+          <ClosureComponentTree components={components} depth={1} />
+        </div>
       </div>
       <div className="w-[12px] min-w-[12px] h-full flex justify-center items-center cursor-pointer select-none" {...adjustBarHandlers}>
         <div className="w-[1px] min-w-[1px] h-full bg-gray-200"></div>

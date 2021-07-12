@@ -42,7 +42,7 @@ export const ComponentsPaneHeader: React.FC<{ show: boolean }> = (props) => {
   }, [autoRefresh, selectedElement, props.show]);
 
   return (
-    <section className={classNames("sticky bg-white h-[32px] justify-between items-center z-50 flex w-full")}>
+    <section className={classNames("absolute bg-white h-[32px] justify-between items-center z-50 flex w-full max-w-full")}>
       <div>
         <button
           type="button"
