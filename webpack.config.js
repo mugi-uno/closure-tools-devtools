@@ -45,7 +45,13 @@ module.exports = (env, argv) => ({
       chunks: ["panel"],
     }),
     new CopyPlugin({
-      patterns: [{ from: "manifest.json" }, { from: "src/activator/setup.js" }, { from: "resources/icon-*.png" }],
+      patterns: [
+        { from: "manifest.json" },
+        { from: "src/activator/setup.js" },
+        { from: "resources/icon-16x16.png" },
+        { from: "resources/icon-48x48.png" },
+        { from: "resources/icon-128x128.png" },
+      ],
     }),
   ],
   devtool: argv.mode !== "production" ? "source-map" : false,

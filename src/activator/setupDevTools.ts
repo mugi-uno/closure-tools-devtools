@@ -62,7 +62,6 @@ const stringifyComponent = (component: any) => {
       return v;
     });
   } catch (e) {
-    console.log(e);
     return '"invalid"';
   }
 };
@@ -73,7 +72,6 @@ const getComponentData = (id: string): string => {
   if (!componentMap[id]) {
     return '"unknown"';
   }
-  console.log("fire", goog.abstractMethod);
   return stringifyComponent(componentMap[id]);
 };
 

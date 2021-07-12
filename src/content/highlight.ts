@@ -35,10 +35,6 @@ export const highlight = (elementOrId: Element | string) => {
   `
   );
 
-  highlightElement.addEventListener("click", () => {
-    console.log(name);
-  });
-
   const name = getModuleName(element);
   const nameElement = document.createElement("div");
   nameElement.innerText = name!;

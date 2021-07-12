@@ -8,7 +8,7 @@
     "build:js:dev": "webpack --mode=development",
     "build:js:prod": "webpack --mode=production",
     "build:css": "tailwindcss -o ./dist/style.css",
-    "build:prod": "run-s clean build:js:prod build:css && zip -j extension.zip ./dist/*",
+    "build:prod": "run-s clean build:js:prod build:css && cd dist && zip -r extension.zip ./* && mv -f ./extension.zip ..",
     "clean": "rimraf dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
