@@ -9,6 +9,8 @@ import {
   ID_ATRRIBUTE_NAME,
   MODULE_NAME_ATTRIBUTE_NAME,
 } from "../types";
+// @ts-ignore
+import stringify from "json-stringify-safe";
 
 const getCurrentModuleName = () => {
   const stack = new Error().stack;
@@ -20,15 +22,41 @@ const getCurrentModuleName = () => {
     .replace(/\.goog\.events\.EventTarget.*/, "");
 };
 
+const IGNORE_CLOSURE_FIELDS = [
+  "actualEventTarget_",
+  "children_",
+  "creationStack",
+  "eventTargetListeners_",
+  "googUiComponentHandler_",
+  "inDocument_",
+  "onDisposeCallbacks_",
+  "parentEventTarget_",
+  "parent_",
+  "__devtools__",
+  "__proto__",
+];
+
 const stringifyComponent = (component: any) => {
   try {
-    return JSON.stringify(component, (k, v) => {
-      if (k.endsWith("_")) {
+    return stringify(component, (k: string, v: unknown) => {
+      if (IGNORE_CLOSURE_FIELDS.includes(k)) {
         return undefined;
       }
 
       if (component !== v && typeof v === "object" && v && "id_" in v) {
-        return "<Component>";
+        return "[Component]";
+      }
+
+      if (v instanceof Element || v instanceof HTMLDocument) {
+        return "[DOMElement]";
+      }
+
+      if (v === window) {
+        return "[Window]";
+      }
+
+      if (goog.abstractMethod && typeof v === "object" && v && (v as any).toJSON === goog.abstractMethod) {
+        return "[unimplemented toJSON method]";
       }
 
       return v;
@@ -45,7 +73,7 @@ const getComponentData = (id: string): string => {
   if (!componentMap[id]) {
     return '"unknown"';
   }
-
+  console.log("fire", goog.abstractMethod);
   return stringifyComponent(componentMap[id]);
 };
 
