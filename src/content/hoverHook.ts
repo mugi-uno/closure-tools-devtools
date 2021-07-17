@@ -22,6 +22,7 @@ export const enableHoverHook = () => {
     "click",
     (event) => {
       event.preventDefault();
+      event.stopPropagation();
 
       if (currentHoveredElement) {
         postMessage({
@@ -30,7 +31,7 @@ export const enableHoverHook = () => {
         });
       }
     },
-    { capture: true }
+    { once: true, capture: true }
   );
 };
 
