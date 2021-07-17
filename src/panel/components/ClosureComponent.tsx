@@ -6,6 +6,7 @@ import { useRenderState } from "../hooks/useRenderState";
 import { actions } from "../modules/slice";
 import { useDispatch, useSelector } from "../modules/store";
 import { ClosureComponentTree } from "./ClosureComponentTree";
+import { CopyButton } from "./CopyButton";
 
 type Props = {
   component: ClosureComponentType;
@@ -17,6 +18,7 @@ export const ClosureComponent: React.FC<Props> = (props) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const [openTree, setOpenTree] = useState(true);
+  const [hovered, setHovered] = useState(false);
   const { renderStateClassObject } = useRenderState();
 
   const selectedElement = useSelector((state) => state.panel.selectedElement);
@@ -36,10 +38,12 @@ export const ClosureComponent: React.FC<Props> = (props) => {
   };
 
   const handleMouserOver = () => {
+    setHovered(true);
     postMessage({ type: "HIGHLIGHT_ELEMENT", payload: { id: component.id } });
   };
 
   const handeMouseLeave = () => {
+    setHovered(false);
     postMessage({ type: "UNHIGHLIGHT_ELEMENT" });
   };
 
@@ -70,7 +74,7 @@ export const ClosureComponent: React.FC<Props> = (props) => {
     <>
       <div
         className={classNames(
-          "text-sm text-gray-800 font-mono py-0.5 transition-all cursor-pointer select-none focus:outline-none bg-white",
+          "text-sm text-gray-800 font-mono py-0.5 transition-all cursor-pointer select-none focus:outline-none bg-white relative",
           {
             ...renderStateClassObject,
             "bg-red-400": isSelected,
@@ -98,6 +102,14 @@ export const ClosureComponent: React.FC<Props> = (props) => {
           ) : null}
           <span className={classNames({ "text-white font-bold": isSelected })}>{props.component.name}</span>
         </div>
+
+        <CopyButton
+          text={props.component.name}
+          className={classNames("absolute top-[2px] right-0 z-[100] transition-all", {
+            "opacity-80": hovered,
+            "opacity-0": !hovered,
+          })}
+        />
       </div>
       {hasChildComponents && openTree ? <ClosureComponentTree components={component.childComponents} depth={props.depth + 1} /> : null}
     </>
