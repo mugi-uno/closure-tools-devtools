@@ -12,14 +12,22 @@ import {
 // @ts-ignore
 import stringify from "json-stringify-safe";
 
-const getCurrentModuleName = () => {
-  const stack = new Error().stack;
-  const line = stack!.split("\n")[2];
-  return line
-    .replace(/^.* at /, "")
-    .replace(/ .*$/, "")
-    .replace(/\.goog\.ui\.Component.*/, "")
-    .replace(/\.goog\.events\.EventTarget.*/, "");
+const getCurrentModuleName = function (this: any) {
+  try {
+    this.____dummyErrorFunction____ = () => {
+      return new Error();
+    };
+
+    const stack = this.____dummyErrorFunction____().stack;
+
+    delete this["____dummyErrorFunction____"];
+
+    const [_, line] = stack!.split("\n");
+
+    return line.replace(/^.* at /, "").replace(/\.[^\.]* .*$/, "");
+  } catch (e) {
+    return "(Unknown)";
+  }
 };
 
 const IGNORE_CLOSURE_FIELDS = [
@@ -87,7 +95,7 @@ const setupEnterDocumentHook = () => {
 
     this.__devtools__ = {
       id,
-      name: getCurrentModuleName(),
+      name: getCurrentModuleName.call(this),
     };
 
     componentMap[id] = this;
@@ -148,7 +156,7 @@ const setupEventDispatchHook = () => {
       new CustomEvent<EventDispatchEventObject>(EventDispatchedEventName, {
         detail: {
           eventName,
-          moduleName: getCurrentModuleName(),
+          moduleName: getCurrentModuleName.call(this),
           eventDetail: dispatchArgumentToString(arguments),
           timestamp: new Date().getTime(),
         },
