@@ -1,7 +1,7 @@
 {
   "name": "Closure Tools DevTools",
   "description": "DevTools for Google Closure Tools",
-  "version": "1.2.1",
+  "version": "2.0",
   "manifest_version": 3,
   "icons": {
     "16": "icon-16x16.png",
