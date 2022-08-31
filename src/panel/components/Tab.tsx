@@ -1,9 +1,10 @@
 import classNames from "classnames";
-import React from "react";
+import React, { ReactNode } from "react";
 
 type Props = {
   active: boolean;
   className?: string;
+  children: ReactNode;
   onClick: () => void;
 };
 
